@@ -1,3 +1,6 @@
+import keep_alive
+keep_alive.keep_alive()
+
 # TO MAKE A DISCORD APPLICATION AND BOT GO TO THIS LINK:
 # https://discord.com/developers/applications
 
@@ -41,6 +44,7 @@ async def on_message(message):
 
     if message.content == 'Hello there.':
         response = random.choice(quotes)
+        print(message.author)
         await message.channel.send(response)
 
     # Await the client to process the commands
@@ -51,8 +55,13 @@ async def on_message(message):
 async def ping(ctx) :
     await ctx.send(f"🏓 Pong with {str(round(client.latency, 2))}")
 
-@client.command(name="whoami")
-async def whoami(ctx) :
+@client.command()
+async def roll(ctx) :
+    # Prevent the bots from talking to itself
+    if ctx.message.author == client.user or ctx.message.author.bot:
+        return
+    for member in ctx.message.mentions:
+        await member.send("https://youtu.be/bIXm-Q-Xa4s")
     await ctx.send(f"You are {ctx.message.author.name}")
 
 @client.command()
